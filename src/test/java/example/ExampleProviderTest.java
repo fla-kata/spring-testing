@@ -1,56 +1,15 @@
 package example;
 
-import au.com.dius.pact.provider.junit.Provider;
-import au.com.dius.pact.provider.junit.RestPactRunner;
-import au.com.dius.pact.provider.junit.State;
-import au.com.dius.pact.provider.junit.loader.PactFolder;
-import au.com.dius.pact.provider.junit.target.TestTarget;
-import au.com.dius.pact.provider.spring.target.MockMvcTarget;
-import example.person.Person;
-import example.person.PersonRepository;
-import example.weather.WeatherClient;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-
-import java.util.Optional;
-
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-
-/**
- *  A provider test for the contract between this service (as a provider) and
- *  a primitive consumer. The implementation of the consumer can be
- *  found under https://github.com/hamvocke/spring-testing-consumer
- */
-
-@RunWith(RestPactRunner.class)
-@Provider("person_provider")// same as in the "provider_name" part in our pact file
-@PactFolder("target/pacts") // tells pact where to load the pact files from
+// Documentation : https://github.com/DiUS/pact-jvm/tree/master/pact-jvm-provider-junit
+// On souhaite ecrire un test qui verifie le contrat 'person_consumer-person_provider.json' fournit dans target/pacts/
+// 1.  Annotations a completer
 public class ExampleProviderTest {
 
-    @Mock
-    private PersonRepository personRepository;
+    // 2. Preparer les mocks necessaires ...
+    // 3. ... afin de pouvoir instancier notre SUT
+    // 4. preparer également l'objet Target qui permettra de faire les appels HTTP
 
-    @Mock
-    private WeatherClient weatherClient;
+    // 5. Penser a coder un Before pour cabler tous les objets
 
-    private ExampleController exampleController;
-
-    @TestTarget
-    public final MockMvcTarget target = new MockMvcTarget();
-
-    @Before
-    public void before() {
-        initMocks(this);
-        exampleController = new ExampleController(personRepository, weatherClient);
-        target.setControllers(exampleController);
-    }
-
-    @State("person data") // same as the "given()" part in our consumer test
-    public void personData() {
-        Person peterPan = new Person("Peter", "Pan");
-        when(personRepository.findByLastName("Pan")).thenReturn(Optional.of
-                (peterPan));
-    }
+    // 6. Ecrire un test qui vérifie l'état "person data" du Json
 }

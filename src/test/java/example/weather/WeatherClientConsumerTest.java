@@ -20,35 +20,14 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+// Documentation : https://github.com/DiUS/pact-jvm/tree/master/pact-jvm-consumer-junit
+// 1. Annotations a completer
 public class WeatherClientConsumerTest {
 
-    @Autowired
-    private WeatherClient weatherClient;
+    // 2. injecter le SUT
+    // 3. declarer Pact JUnit Rule representant le fournisseur
 
-    @Rule
-    public PactProviderRuleMk2 weatherProvider = new PactProviderRuleMk2
-            ("weather_provider", "localhost", 8089, this);
+    // 4. ecrire une méthode qui retourne un fragment de données (weatherApiResponse) en utilisant FileLoader
+    // 5. ecrire un test qui appel la méthode fetchWeather et vérifier une information de la réponse (summary == rain)
 
-    @Pact(consumer="sample_microservice")
-    public RequestResponsePact createPact(PactDslWithProvider builder) throws IOException {
-        return builder
-                .given("weather forecast data")
-                .uponReceiving("a request for a weather request for Hamburg")
-                    .path("/some-test-api-key/53.5511,9.9937")
-                    .method("GET")
-                .willRespondWith()
-                    .status(200)
-                    .body(FileLoader.read("classpath:weatherApiResponse.json"), ContentType.APPLICATION_JSON)
-                .toPact();
-    }
-
-    @Test
-    @PactVerification("weather_provider")
-    public void shouldFetchWeatherInformation() throws Exception {
-        Optional<WeatherResponse> weatherResponse = weatherClient.fetchWeather();
-        assertThat(weatherResponse.isPresent(), is(true));
-        assertThat(weatherResponse.get().getSummary(), is("Rain"));
-    }
 }

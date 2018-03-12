@@ -1,52 +1,30 @@
 package example;
 
-import example.person.Person;
-import example.person.PersonRepository;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.core.Is.is;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// 1. Ajouter annotations pour demarrer l'application sur un port aléatoire
 public class HelloE2ERestTest {
 
-    @Autowired
-    private PersonRepository personRepository;
-
-    @LocalServerPort
+    // 2. Injecter le repository
+    // 3. Recuperer le port affecté au lancement de l'appli
     private int port;
 
+    // 4. vider le repository
     @After
     public void tearDown() throws Exception {
-        personRepository.deleteAll();
+        // TODO
     }
 
+    // 5. Tester en utilisant REST-Assured que l'URL hello repond "Hello World!" avec un status 200.
     @Test
     public void shouldReturnHelloWorld() throws Exception {
-        when()
-                .get(String.format("http://localhost:%s/hello", port))
-                .then()
-                .statusCode(is(200))
-                .body(containsString("Hello World!"));
+        // TODO
     }
 
+    // 6. Tester en utilisant REST-Assured que l'URL hello/Pan repond "Hello Peter Pan!" avec un status 200.
     @Test
     public void shouldReturnGreeting() throws Exception {
-        Person peter = new Person("Peter", "Pan");
-        personRepository.save(peter);
-
-        when()
-                .get(String.format("http://localhost:%s/hello/Pan", port))
-                .then()
-                .statusCode(is(200))
-                .body(containsString("Hello Peter Pan!"));
+        // TODO
     }
 }
